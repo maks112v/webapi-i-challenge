@@ -58,11 +58,16 @@ server.put('/api/users/:id', (req, res) => {
     id
   } = req.params;
   const changes = req.body;
-  console.log(id);
 
   db.update(id, changes)
     .then(update => {
-      res.status(200).json(update);
+      if(update > 0){
+        res.status(200).json(update);
+      }
+      else {
+        res.status(404).json({message: "Not Found"});
+      }
+      
     })
     .catch(err => {
       res.status(404).json({
